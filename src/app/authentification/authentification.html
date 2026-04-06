@@ -1,0 +1,38 @@
+<div>
+  <div>
+    <h5>Account Credentials</h5>
+
+    <div>
+      <label>Email</label>
+      <input type="text" [formField]="userForm().email" />
+      @if (showPassword() === false) {
+        <button type="button" (click)="checkEmailExists()">Submit Email</button>
+      }
+    </div>
+
+    @if (showPassword() === true) {
+      <div>
+        <label>Password</label>
+        <input type="password" [formField]="userForm().password" />
+      </div>
+
+      @if (show() === false) {
+        @if (userForm().repeatPassword; as repeatPassword) {
+          <div>
+            <label>Confirm Password</label>
+            <input type="password" [formField]="repeatPassword" />
+          </div>
+        }
+      }
+    }
+
+    <div>
+      @if (show() === true) {
+        <button type="button" (click)="logIn()">Log In</button>
+      }
+      @if (show() === false && showPassword() === true) {
+        <button type="button" (click)="register()">Register</button>
+      }
+    </div>
+  </div>
+</div>
