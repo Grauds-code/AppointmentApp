@@ -4,23 +4,26 @@
 
     <div>
       <label>Email</label>
-      <input type="text" [formField]="userForm().email" />
+      <input type="text" [formField]="userForm.email" />
       @if (showPassword() === false) {
         <button type="button" (click)="checkEmailExists()">Submit Email</button>
       }
+      <app-error-valdiations [state]="userForm.email()"></app-error-valdiations>
     </div>
 
     @if (showPassword() === true) {
       <div>
         <label>Password</label>
-        <input type="password" [formField]="userForm().password" />
+        <input type="password" [formField]="userForm.password" />
+        <app-error-valdiations [state]="userForm.password()"></app-error-valdiations>
       </div>
 
       @if (show() === false) {
-        @if (userForm().repeatPassword; as repeatPassword) {
+        @if (userForm.repeatPassword; as repeatPassword) {
           <div>
             <label>Confirm Password</label>
             <input type="password" [formField]="repeatPassword" />
+            <app-error-valdiations [state]="repeatPassword()"></app-error-valdiations>
           </div>
         }
       }

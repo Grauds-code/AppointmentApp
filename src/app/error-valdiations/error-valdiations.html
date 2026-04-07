@@ -1,0 +1,5 @@
+@if (state().invalid() && state().touched()) {
+  @for (err of state().errors(); track $index) {
+    <div class="text-danger small mt-1">{{ err.message }}</div>
+  }
+}

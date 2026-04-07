@@ -3,10 +3,11 @@ import { form, FormField } from '@angular/forms/signals';
 import { LoginService } from '../services/login-service';
 import { createUserForm, validateUserForm } from '../models/userModel';
 import { Router } from '@angular/router';
+import { ErrorValdiations } from '../error-valdiations/error-valdiations';
 
 @Component({
   selector: 'app-authentification',
-  imports: [FormField],
+  imports: [FormField, ErrorValdiations],
   templateUrl: './authentification.html',
   styleUrl: './authentification.css',
 })
