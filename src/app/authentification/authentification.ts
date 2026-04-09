@@ -42,7 +42,7 @@ export class Authentification {
       next: (r) => {
         if (r.status === 201) {
           sessionStorage.setItem('userData', this.userSignal().email);
-          this.router.navigateByUrl('/shop');
+          this.router.navigateByUrl('/appointments');
         }
       },
       error: (error) => {
@@ -55,9 +55,9 @@ export class Authentification {
   logIn() {
     this.loginService.logIn(this.userSignal()).subscribe({
       next: (r) => {
-        if (r.status === 200) {
+        if (r.status === 200 && r.body != null && r.body > 0) {
           sessionStorage.setItem('userData', this.userSignal().email);
-          this.router.navigateByUrl('/shop');
+          this.router.navigateByUrl('/appointments');
         } else {
           alert('Invalid email or password. Please try again.');
         }

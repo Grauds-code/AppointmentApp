@@ -1,0 +1,55 @@
+<app-navigation></app-navigation>
+
+<h2>Create Appointment</h2>
+
+@for (appt of formCreator.appointments; track $index; let i = $index) {
+  @if (!appt().value().id) {
+    <form>
+      <div>
+        <label>Appointment Name</label><br />
+        <input type="text" [formField]="appt.AppointmentName" />
+        <app-error-valdiations [state]="appt.AppointmentName()"></app-error-valdiations>
+      </div>
+
+      <div>
+        <label>Date</label><br />
+        <input type="date" [formField]="appt.AppointmentDate" />
+        <app-error-valdiations [state]="appt.AppointmentDate()"></app-error-valdiations>
+      </div>
+
+      <div>
+        <label>Time</label><br />
+        <input type="time" [formField]="appt.AppointmentTime" />
+        <app-error-valdiations [state]="appt.AppointmentTime()"></app-error-valdiations>
+      </div>
+
+      <div>
+        <label>Location</label><br />
+        <input type="text" [formField]="appt.AppointmentLocation" />
+        <app-error-valdiations [state]="appt.AppointmentLocation()"></app-error-valdiations>
+      </div>
+
+      <div>
+        <label>Max Number of People</label><br />
+        <input type="number" [formField]="appt.MaxNumberofPeople" />
+        <app-error-valdiations [state]="appt.MaxNumberofPeople()"></app-error-valdiations>
+      </div>
+
+      <div>
+        <label>Current Number of People</label><br />
+        <input type="number" [formField]="appt.CurrentNumberofPeople" />
+        <app-error-valdiations [state]="appt.CurrentNumberofPeople()"></app-error-valdiations>
+      </div>
+
+      <div>
+        <label>Description</label><br />
+        <textarea [formField]="appt.Description"></textarea>
+        <app-error-valdiations [state]="appt.Description()"></app-error-valdiations>
+      </div>
+
+      <div>
+        <button type="button" (click)="createAppointment(i)">Create</button>
+      </div>
+    </form>
+  }
+}

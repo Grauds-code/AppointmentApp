@@ -1,0 +1,17 @@
+<app-navigation></app-navigation>
+
+<h2>Appointments</h2>
+
+@for (appt of appointmentCreatorSignal().appointments; track appt.id) {
+  @if (appt.id != null && appt.id !== 0 && appt.AppointmentName) {
+    <div>
+      <h3>{{ appt.AppointmentName }}</h3>
+      <p>Date: {{ appt.AppointmentDate }}</p>
+      <p>Time: {{ appt.AppointmentTime }}</p>
+      <p>Location: {{ appt.AppointmentLocation }}</p>
+      <p>Spots: {{ appt.CurrentNumberofPeople }} / {{ appt.MaxNumberofPeople }}</p>
+      <p>{{ appt.Description }}</p>
+      <hr />
+    </div>
+  }
+}
