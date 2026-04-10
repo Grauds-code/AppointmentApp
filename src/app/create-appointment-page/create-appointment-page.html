@@ -36,12 +36,6 @@
       </div>
 
       <div>
-        <label>Current Number of People</label><br />
-        <input type="number" [formField]="appt.CurrentNumberofPeople" />
-        <app-error-valdiations [state]="appt.CurrentNumberofPeople()"></app-error-valdiations>
-      </div>
-
-      <div>
         <label>Description</label><br />
         <textarea [formField]="appt.Description"></textarea>
         <app-error-valdiations [state]="appt.Description()"></app-error-valdiations>
