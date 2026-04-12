@@ -2,7 +2,13 @@
 
 <h2>Appointments</h2>
 
-@for (appt of appointmentCreatorSignal().appointments; track appt.id) {
+<div>
+  <button (click)="activeFilter.set('all')">All</button>
+  <button (click)="activeFilter.set('available')">Available</button>
+  <button (click)="activeFilter.set('mine')">My Appointments</button>
+</div>
+
+@for (appt of filteredAppointments(); track appt.id) {
   @if (appt.id != null && appt.id !== 0 && appt.AppointmentName) {
     <div>
       <h3>{{ appt.AppointmentName }}</h3>
@@ -12,6 +18,20 @@
       <p>Spots: {{ appt.CurrentNumberofPeople }} / {{ appt.MaxNumberofPeople }}</p>
       <p>{{ appt.Description }}</p>
       <hr />
+      @if (appt.Registered === false) {
+        <button
+          (click)="registerForAppointment(appt.id)"
+          [disabled]="appt.CurrentNumberofPeople >= appt.MaxNumberofPeople"
+        >
+          Register
+        </button>
+      }
+      @if (appt.Registered === true) {
+        <button (click)="cancelRegistration(appt.id)">Cancel Registration</button>
+      }
+      @if (isAdmin) {
+        <button (click)="deleteAppointment(appt.id)">Delete Appointment</button>
+      }
     </div>
   }
 }

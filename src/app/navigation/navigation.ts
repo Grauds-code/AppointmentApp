@@ -11,7 +11,16 @@ export class Navigation {
   router = inject(Router);
   adminGuard: boolean = sessionStorage.getItem('userData') === 'admin@admin.lv';
 
+  loadAppointments() {
+    this.router.navigateByUrl('/appointments');
+  }
+
   loadAppointmentCreator() {
     this.router.navigateByUrl('/create-appointment-page');
+  }
+
+  logOut() {
+    sessionStorage.clear();
+    this.router.navigateByUrl('/');
   }
 }

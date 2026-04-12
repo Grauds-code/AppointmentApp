@@ -17,8 +17,45 @@ export class AppointmentService {
     });
   }
 
-  public findAllAppointments(): Observable<HttpResponse<AppointmentModel[]>> {
+  public findAllAppointments(email: string): Observable<HttpResponse<AppointmentModel[]>> {
     return this.http.get<AppointmentModel[]>(`${this.path}/api/v2/appointments`, {
+      params: { email },
+      observe: 'response',
+    });
+  }
+
+  public registerForAppointment(
+    appointmentId: number,
+    email: string,
+  ): Observable<HttpResponse<void>> {
+    return this.http.post<void>(
+      `${this.path}/api/v2/appointments/${appointmentId}/register`,
+      null,
+      {
+        params: { email },
+        observe: 'response',
+      },
+    );
+  }
+
+  public cancelRegistration(appointmentId: number, email: string): Observable<HttpResponse<void>> {
+    return this.http.delete<void>(`${this.path}/api/v2/appointments/${appointmentId}/register`, {
+      params: { email },
+      observe: 'response',
+    });
+  }
+
+  public updateAppointment(
+    appointmentId: number,
+    appointment: AppointmentModel,
+  ): Observable<HttpResponse<void>> {
+    return this.http.put<void>(`${this.path}/api/v2/appointments/${appointmentId}`, appointment, {
+      observe: 'response',
+    });
+  }
+
+  public deleteAppointment(appointmentId: number): Observable<HttpResponse<void>> {
+    return this.http.delete<void>(`${this.path}/api/v2/appointments/${appointmentId}`, {
       observe: 'response',
     });
   }

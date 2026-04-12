@@ -3,7 +3,7 @@ import { Navigation } from '../navigation/navigation';
 import { ErrorValdiations } from '../error-valdiations/error-valdiations';
 import { AppointmentService } from '../services/appointment-service';
 import { AllAppointmentsModel } from '../models/apointmentModel';
-import { applyEach, form, FormField, required } from '@angular/forms/signals';
+import { applyEach, form, FormField, required, validate } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-create-appointment-page',
@@ -18,6 +18,8 @@ export class CreateAppointmentPage implements OnInit {
 
   appointmentService = inject(AppointmentService);
 
+  email: string = sessionStorage.getItem('userData') ?? '';
+
   appointmentCreatorSignal = signal<AllAppointmentsModel>({
     appointments: [],
   });
@@ -25,16 +27,21 @@ export class CreateAppointmentPage implements OnInit {
     applyEach(e.appointments, (item) => {
       required(item.AppointmentName, { message: 'Appointment Name is required' });
       required(item.AppointmentDate, { message: 'Appointment Date is required' });
+      validate(item.AppointmentDate, ({ value }) => {
+        if (value() && value() < new Date().toISOString().split('T')[0]) {
+          return { kind: 'pastDate', message: 'Appointment date cannot be in the past' };
+        }
+        return null;
+      });
       required(item.AppointmentTime, { message: 'Appointment Time is required' });
       required(item.AppointmentLocation, { message: 'Appointment Location is required' });
       required(item.MaxNumberofPeople, { message: 'Max Number of People is required' });
-      required(item.CurrentNumberofPeople, { message: 'Current Number of People is required' }); // Ka sis strada?
       required(item.Description, { message: 'Description is required' });
     });
   });
 
   findAllAppointments() {
-    this.appointmentService.findAllAppointments().subscribe({
+    this.appointmentService.findAllAppointments(this.email).subscribe({
       next: (r) => {
         this.appointmentCreatorSignal.set({
           appointments: [
@@ -60,18 +67,14 @@ export class CreateAppointmentPage implements OnInit {
   }
 
   updateAppointment(index: number) {
-    const id = this.appointmentCreatorSignal().appointments[index].id;
-    const appointmentToUpdate = this.appointmentCreatorSignal().appointments.find(
-      (appointment) => appointment.id === id,
-    );
-    if (appointmentToUpdate) {
-      this.appointmentService.createAppointment(appointmentToUpdate).subscribe({
-        next: () => {},
-        error: (error) => {
-          console.error('Error updating appointment:', error);
-        },
-      });
-    }
+    const appointment = this.appointmentCreatorSignal().appointments[index];
+    if (appointment.id == null) return;
+    this.appointmentService.updateAppointment(appointment.id, appointment).subscribe({
+      next: () => {},
+      error: (error) => {
+        console.error('Error updating appointment:', error);
+      },
+    });
   }
 
   createAppointment(index: number) {
@@ -101,7 +104,7 @@ export class CreateAppointmentPage implements OnInit {
           }
         },
         error: (error) => {
-          console.error('Error creating BMW:', error);
+          console.error('Error creating Appointment:', error);
         },
       });
   }
