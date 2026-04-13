@@ -19,12 +19,11 @@
       <p>{{ appt.Description }}</p>
       <hr />
       @if (appt.Registered === false) {
-        <button
-          (click)="registerForAppointment(appt.id)"
-          [disabled]="appt.CurrentNumberofPeople >= appt.MaxNumberofPeople"
-        >
-          Register
-        </button>
+        @if (appt.CurrentNumberofPeople >= appt.MaxNumberofPeople) {
+          <p>Appointment is full</p>
+        } @else {
+          <button (click)="registerForAppointment(appt.id)">Register</button>
+        }
       }
       @if (appt.Registered === true) {
         <button (click)="cancelRegistration(appt.id)">Cancel Registration</button>
