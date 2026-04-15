@@ -2,12 +2,15 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppointmentModel } from '../models/apointmentModel';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppointmentService {
-  path: string = 'http://localhost:8080';
+  
+
+  private readonly path: string = environment.api.backUrl;
 
   http = inject(HttpClient);
 

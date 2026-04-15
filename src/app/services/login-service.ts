@@ -2,13 +2,15 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserModel } from '../models/userModel';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
   http = inject(HttpClient);
-  path: string = 'http://localhost:8080';
+
+  private readonly path: string = environment.api.backUrl;
 
   public createUser(user: UserModel): Observable<HttpResponse<number>> {
     return this.http.post<number>(`${this.path}/api/v2/users`, user, { observe: 'response' });
