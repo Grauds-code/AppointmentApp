@@ -1,36 +1,74 @@
 <app-navigation></app-navigation>
 
-<h2>Appointments</h2>
+<div class="container">
+  <h2 class="mb-3">Appointments</h2>
 
-<div>
-  <button (click)="activeFilter.set('all')">All</button>
-  <button (click)="activeFilter.set('available')">Available</button>
-  <button (click)="activeFilter.set('mine')">My Appointments</button>
+  <div class="btn-group mb-4" role="group">
+    <button
+      class="btn btn-outline-secondary"
+      [class.active]="activeFilter() === 'all'"
+      (click)="activeFilter.set('all')"
+    >
+      All
+    </button>
+    <button
+      class="btn btn-outline-secondary"
+      [class.active]="activeFilter() === 'available'"
+      (click)="activeFilter.set('available')"
+    >
+      Available
+    </button>
+    <button
+      class="btn btn-outline-secondary"
+      [class.active]="activeFilter() === 'mine'"
+      (click)="activeFilter.set('mine')"
+    >
+      My Appointments
+    </button>
+  </div>
+
+  <div class="row g-3">
+    @for (appt of filteredAppointments(); track appt.id) {
+      @if (appt.id != null && appt.id !== 0 && appt.AppointmentName) {
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">{{ appt.AppointmentName }}</h5>
+              <p class="card-text mb-1"><strong>Date:</strong> {{ appt.AppointmentDate }}</p>
+              <p class="card-text mb-1"><strong>Time:</strong> {{ appt.AppointmentTime }}</p>
+              <p class="card-text mb-1">
+                <strong>Location:</strong> {{ appt.AppointmentLocation }}
+              </p>
+              <p class="card-text mb-1">
+                <strong>Spots:</strong> {{ appt.CurrentNumberofPeople }} /
+                {{ appt.MaxNumberofPeople }}
+              </p>
+              <p class="card-text text-muted">{{ appt.Description }}</p>
+            </div>
+            <div class="card-footer d-flex gap-2 flex-wrap">
+              @if (appt.Registered === false) {
+                @if (appt.CurrentNumberofPeople >= appt.MaxNumberofPeople) {
+                  <span class="badge bg-secondary align-self-center">Full</span>
+                } @else {
+                  <button class="btn btn-success btn-sm" (click)="registerForAppointment(appt.id)">
+                    Register
+                  </button>
+                }
+              }
+              @if (appt.Registered === true) {
+                <button class="btn btn-warning btn-sm" (click)="cancelRegistration(appt.id)">
+                  Cancel Registration
+                </button>
+              }
+              @if (isAdmin) {
+                <button class="btn btn-danger btn-sm ms-auto" (click)="deleteAppointment(appt.id)">
+                  Delete
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </div>
 </div>
-
-@for (appt of filteredAppointments(); track appt.id) {
-  @if (appt.id != null && appt.id !== 0 && appt.AppointmentName) {
-    <div>
-      <h3>{{ appt.AppointmentName }}</h3>
-      <p>Date: {{ appt.AppointmentDate }}</p>
-      <p>Time: {{ appt.AppointmentTime }}</p>
-      <p>Location: {{ appt.AppointmentLocation }}</p>
-      <p>Spots: {{ appt.CurrentNumberofPeople }} / {{ appt.MaxNumberofPeople }}</p>
-      <p>{{ appt.Description }}</p>
-      <hr />
-      @if (appt.Registered === false) {
-        @if (appt.CurrentNumberofPeople >= appt.MaxNumberofPeople) {
-          <p>Appointment is full</p>
-        } @else {
-          <button (click)="registerForAppointment(appt.id)">Register</button>
-        }
-      }
-      @if (appt.Registered === true) {
-        <button (click)="cancelRegistration(appt.id)">Cancel Registration</button>
-      }
-      @if (isAdmin) {
-        <button (click)="deleteAppointment(appt.id)">Delete Appointment</button>
-      }
-    </div>
-  }
-}

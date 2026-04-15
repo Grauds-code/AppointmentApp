@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { Authentification } from './authentification/authentification';
 import { adminGuard } from './adminGuard/adminGuard';
-import { AppointmentPage } from './appointment-page/appointment-page';
 
 export const routes: Routes = [
   { path: '', component: Authentification, title: 'Login/Register' },

@@ -1,41 +1,45 @@
-<div>
-  <div>
-    <h5>Account Credentials</h5>
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow-sm" style="width: 380px">
+    <div class="card-body p-4">
+      <h5 class="card-title mb-4 text-center">Account Credentials</h5>
 
-    <div>
-      <label>Email</label>
-      <input type="text" [formField]="userForm.email" />
-      @if (showPassword() === false) {
-        <button type="button" (click)="checkEmailExists()">Submit Email</button>
-      }
-      <app-error-valdiations [state]="userForm.email()"></app-error-valdiations>
-    </div>
-
-    @if (showPassword() === true) {
-      <div>
-        <label>Password</label>
-        <input type="password" [formField]="userForm.password" />
-        <app-error-valdiations [state]="userForm.password()"></app-error-valdiations>
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="text" class="form-control" [formField]="userForm.email" />
+        @if (showPassword() === false) {
+          <button type="button" class="btn btn-primary mt-2 w-100" (click)="checkEmailExists()">
+            Continue
+          </button>
+        }
+        <app-error-valdiations [state]="userForm.email()"></app-error-valdiations>
       </div>
 
-      @if (show() === false) {
-        @if (userForm.repeatPassword; as repeatPassword) {
-          <div>
-            <label>Confirm Password</label>
-            <input type="password" [formField]="repeatPassword" />
-            <app-error-valdiations [state]="repeatPassword()"></app-error-valdiations>
-          </div>
+      @if (showPassword() === true) {
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" [formField]="userForm.password" />
+          <app-error-valdiations [state]="userForm.password()"></app-error-valdiations>
+        </div>
+
+        @if (show() === false) {
+          @if (userForm.repeatPassword; as repeatPassword) {
+            <div class="mb-3">
+              <label class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" [formField]="repeatPassword" />
+              <app-error-valdiations [state]="repeatPassword()"></app-error-valdiations>
+            </div>
+          }
         }
       }
-    }
 
-    <div>
-      @if (show() === true) {
-        <button type="button" (click)="logIn()">Log In</button>
-      }
-      @if (show() === false && showPassword() === true) {
-        <button type="button" (click)="register()">Register</button>
-      }
+      <div class="d-grid mt-3">
+        @if (show() === true) {
+          <button type="button" class="btn btn-success" (click)="logIn()">Log In</button>
+        }
+        @if (show() === false && showPassword() === true) {
+          <button type="button" class="btn btn-primary" (click)="register()">Register</button>
+        }
+      </div>
     </div>
   </div>
 </div>

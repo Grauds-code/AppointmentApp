@@ -41,7 +41,11 @@ export class AppointmentPage implements OnInit {
     this.appointmentService.findAllAppointments(this.email).subscribe({
       next: (r) => {
         this.appointmentCreatorSignal.set({
-          appointments: r.body ?? [],
+          appointments: (r.body ?? []).sort(
+            (a, b) =>
+              a.AppointmentDate.localeCompare(b.AppointmentDate) ||
+              a.AppointmentTime.localeCompare(b.AppointmentTime),
+          ),
         });
       },
       error: (error) => {

@@ -45,15 +45,6 @@ export class AppointmentService {
     });
   }
 
-  public updateAppointment(
-    appointmentId: number,
-    appointment: AppointmentModel,
-  ): Observable<HttpResponse<void>> {
-    return this.http.put<void>(`${this.path}/api/v2/appointments/${appointmentId}`, appointment, {
-      observe: 'response',
-    });
-  }
-
   public deleteAppointment(appointmentId: number): Observable<HttpResponse<void>> {
     return this.http.delete<void>(`${this.path}/api/v2/appointments/${appointmentId}`, {
       observe: 'response',

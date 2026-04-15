@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Navigation } from '../navigation/navigation';
 import { ErrorValdiations } from '../error-valdiations/error-valdiations';
 import { AppointmentService } from '../services/appointment-service';
@@ -11,17 +11,25 @@ import { applyEach, form, FormField, required, validate } from '@angular/forms/s
   templateUrl: './create-appointment-page.html',
   styleUrl: './create-appointment-page.css',
 })
-export class CreateAppointmentPage implements OnInit {
-  ngOnInit(): void {
-    this.findAllAppointments();
-  }
-
+export class CreateAppointmentPage {
   appointmentService = inject(AppointmentService);
 
   email: string = sessionStorage.getItem('userData') ?? '';
 
   appointmentCreatorSignal = signal<AllAppointmentsModel>({
-    appointments: [],
+    appointments: [
+      {
+        id: undefined,
+        AppointmentName: '',
+        AppointmentDate: '',
+        AppointmentTime: '',
+        AppointmentLocation: '',
+        MaxNumberofPeople: 0,
+        CurrentNumberofPeople: 0,
+        Description: '',
+        Registered: false,
+      },
+    ],
   });
   formCreator = form(this.appointmentCreatorSignal, (e) => {
     applyEach(e.appointments, (item) => {
@@ -39,43 +47,6 @@ export class CreateAppointmentPage implements OnInit {
       required(item.Description, { message: 'Description is required' });
     });
   });
-
-  findAllAppointments() {
-    this.appointmentService.findAllAppointments(this.email).subscribe({
-      next: (r) => {
-        this.appointmentCreatorSignal.set({
-          appointments: [
-            ...(r.body ?? []),
-            {
-              id: undefined,
-              AppointmentName: '',
-              AppointmentDate: '',
-              AppointmentTime: '',
-              AppointmentLocation: '',
-              MaxNumberofPeople: 0,
-              CurrentNumberofPeople: 0,
-              Description: '',
-              Registered: false,
-            },
-          ],
-        });
-      },
-      error: (error) => {
-        console.error('Error fetching appointments:', error);
-      },
-    });
-  }
-
-  updateAppointment(index: number) {
-    const appointment = this.appointmentCreatorSignal().appointments[index];
-    if (appointment.id == null) return;
-    this.appointmentService.updateAppointment(appointment.id, appointment).subscribe({
-      next: () => {},
-      error: (error) => {
-        console.error('Error updating appointment:', error);
-      },
-    });
-  }
 
   createAppointment(index: number) {
     this.appointmentService
